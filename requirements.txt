@@ -1,6 +1,6 @@
 fastapi
 pydantic
-openai
+groq
 pytest
 httpx
 python-multipart
