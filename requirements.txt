@@ -1,6 +1,7 @@
 fastapi
-pydantic==2.5.2
-openai==1.6.0
-tiktoken==0.5.2
-pytest==7.4.3
-numpy==1.26.2
+pydantic
+openai
+tiktoken
+pytest
+numpy
+httpx
