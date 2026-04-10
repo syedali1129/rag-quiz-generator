@@ -1,0 +1,100 @@
+:root {
+    --bg-color: #0f172a;
+    --text-primary: #f8fafc;
+    --text-sec: #94a3b8;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --correct: #10b981;
+    --wrong: #ef4444;
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.background-blobs {
+    position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; overflow: hidden;
+}
+.blob {
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5; animation: float 10s infinite ease-in-out alternate;
+}
+.blob1 { top: -10%; left: -10%; width: 500px; height: 500px; background: rgba(59, 130, 246, 0.4); }
+.blob2 { bottom: -10%; right: -10%; width: 400px; height: 400px; background: rgba(139, 92, 246, 0.4); animation-delay: -5s; }
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, 50px) scale(1.1); }
+}
+
+.container {
+    width: 90%; max-width: 800px; margin: 2rem; padding: 2.5rem;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    border-radius: 20px; backdrop-filter: blur(16px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+header { text-align: center; margin-bottom: 2rem; }
+header h1 { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.subtitle { color: var(--text-sec); margin-top: 0.5rem; }
+
+.section { display: none; opacity: 0; transition: opacity 0.4s ease; }
+.active-section { display: block; opacity: 1; animation: fadeIn 0.5s forwards; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+textarea {
+    width: 100%; height: 200px; padding: 1.2rem;
+    background: rgba(15, 23, 42, 0.6); color: var(--text-primary);
+    border: 1px solid var(--glass-border); border-radius: 12px;
+    font-family: inherit; font-size: 1rem; resize: vertical; outline: none; transition: border 0.3s;
+}
+textarea:focus { border-color: var(--accent); }
+
+.primary-btn, .secondary-btn {
+    display: inline-block; width: 100%; padding: 1rem; margin-top: 1.5rem;
+    border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s ease;
+}
+.primary-btn { background: var(--accent); color: white; }
+.primary-btn:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4); }
+.secondary-btn { background: rgba(255,255,255,0.1); color: white; }
+.secondary-btn:hover { background: rgba(255,255,255,0.2); }
+
+.hidden { display: none !important; }
+
+#loader { text-align: center; margin-top: 2rem; color: var(--text-sec); }
+.spinner {
+    width: 40px; height: 40px; margin: 0 auto 1rem; border: 4px solid rgba(255,255,255,0.1);
+    border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Quiz Styles */
+.question-block { margin-bottom: 2rem; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px;}
+.question-text { font-size: 1.2rem; font-weight: 500; margin-bottom: 1rem; }
+.options-list { list-style: none; }
+.option-item { margin-bottom: 0.5rem; }
+.option-label {
+    display: flex; align-items: center; padding: 0.8rem 1rem; border-radius: 8px;
+    background: rgba(255,255,255,0.05); cursor: pointer; transition: all 0.2s; border: 1px solid transparent;
+}
+.option-label:hover { background: rgba(255,255,255,0.1); border-color: var(--glass-border); }
+.option-item input[type="radio"] { margin-right: 1rem; cursor: pointer; }
+
+.result-item { margin-bottom: 1.5rem; padding: 1.5rem; border-radius: 12px; background: rgba(0,0,0,0.2); border-left: 4px solid transparent;}
+.result-correct { border-left-color: var(--correct); }
+.result-wrong { border-left-color: var(--wrong); }
+.reasoning-box { margin-top: 1rem; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px; color: #bfdbfe; font-size: 0.95rem; line-height: 1.5;}
