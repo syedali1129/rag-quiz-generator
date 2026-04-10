@@ -3,3 +3,5 @@ pydantic
 openai
 pytest
 httpx
+python-multipart
+pypdf

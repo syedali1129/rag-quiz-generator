@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateBtn = document.getElementById('generate-btn');
     const submitBtn = document.getElementById('submit-quiz-btn');
     const resetBtn = document.getElementById('reset-btn');
-    const knowledgeInput = document.getElementById('knowledge-input');
+    const pdfInput = document.getElementById('pdf-input');
+    const fileNameDisplay = document.getElementById('file-name');
     
     // Sections
     const ingestSection = document.getElementById('ingest-section');
@@ -30,27 +31,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Phase 1: Generate Quiz
     generateBtn.addEventListener('click', async () => {
-        const text = knowledgeInput.value.trim();
-        if (!text) {
-            alert("Please paste some text to generate a quiz.");
+        const file = pdfInput.files[0];
+        if (!file) {
+            alert("Please select a PDF file to generate a quiz.");
             return;
         }
+        
+        const formData = new FormData();
+        formData.append('file', file);
 
-        currentContext = text;
         generateBtn.classList.add('hidden');
         loader.classList.remove('hidden');
 
         try {
             const response = await fetch('/api/generate', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text })
+                body: formData
             });
             
             if (!response.ok) throw new Error("Failed to generate quiz.");
             
             const data = await response.json();
             currentQuestions = data.questions || [];
+            currentContext = data.extracted_text || "No context found.";
             
             if (currentQuestions.length === 0) {
                 alert("Could not generate questions. Text might be too short.");
@@ -170,7 +173,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Reset workflow
     resetBtn.addEventListener('click', () => {
-        knowledgeInput.value = '';
+        pdfInput.value = '';
+        fileNameDisplay.textContent = 'Click to choose a PDF file';
+        fileNameDisplay.parentElement.classList.remove('has-file');
+        
         currentQuestions = [];
         loader.classList.add('hidden');
         generateBtn.classList.remove('hidden');

@@ -22,8 +22,13 @@
 
         <!-- Section 1: Ingestion -->
         <section id="ingest-section" class="active-section section">
-            <h2>1. Provide Knowledge Base</h2>
-            <textarea id="knowledge-input" placeholder="Paste your text here (e.g., article, notes) to generate a quiz..."></textarea>
+            <h2>1. Provide Knowledge Base (PDF)</h2>
+            <div class="file-upload-wrapper">
+                <input type="file" id="pdf-input" accept="application/pdf" class="file-input">
+                <label for="pdf-input" class="file-label">
+                    <span id="file-name">Click to choose a PDF file</span>
+                </label>
+            </div>
             <button id="generate-btn" class="primary-btn">Generate Quiz</button>
             <div id="loader" class="hidden">
                 <div class="spinner"></div>
