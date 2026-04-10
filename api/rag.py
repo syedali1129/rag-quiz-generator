@@ -1,5 +1,6 @@
 import re
-import numpy as np
+import math
+import random
 
 def chunk_text(text: str, max_chars: int = 500) -> list[str]:
     """
@@ -33,19 +34,18 @@ def generate_embeddings(texts: list[str]) -> list[list[float]]:
     Mock embedding generator for testing without LLM API keys.
     Generates a random float matrix of shape (len(texts), 1536).
     """
-    # Simulate OpenAI ada-002 dimensionality
     if not texts:
         return []
-    embeddings = np.random.rand(len(texts), 1536).tolist()
+    embeddings = [[random.random() for _ in range(1536)] for _ in texts]
     return embeddings
 
 def compute_cosine_similarity(vec1: list[float], vec2: list[float]) -> float:
     """
     Calculates the cosine similarity between two vectors.
     """
-    dot_product = np.dot(vec1, vec2)
-    norm_a = np.linalg.norm(vec1)
-    norm_b = np.linalg.norm(vec2)
+    dot_product = sum(a * b for a, b in zip(vec1, vec2))
+    norm_a = math.sqrt(sum(a * a for a in vec1))
+    norm_b = math.sqrt(sum(b * b for b in vec2))
     
     if norm_a == 0.0 or norm_b == 0.0:
         return 0.0

@@ -1,7 +1,5 @@
 fastapi
 pydantic
 openai
-tiktoken
 pytest
-numpy
 httpx
