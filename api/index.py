@@ -52,7 +52,7 @@ async def generate_quiz(file: UploadFile = File(...)):
                 {"role": "system", "content": "You output strictly JSON."},
                 {"role": "user", "content": prompt}
             ],
-            model="llama3-8b-8192",
+            model="llama-3.1-8b-instant",
             response_format={"type": "json_object"}
         )
         llm_response = json.loads(chat_completion.choices[0].message.content)
@@ -89,7 +89,7 @@ def evaluate_answer(request: EvaluateRequest):
                 messages=[
                     {"role": "user", "content": prompt}
                 ],
-                model="llama3-8b-8192"
+                model="llama-3.1-8b-instant"
             )
             reasoning = chat_completion.choices[0].message.content
         except Exception as e:
