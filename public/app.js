@@ -61,7 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: formData
             });
             
-            if (!response.ok) throw new Error("Failed to generate quiz.");
+            if (!response.ok) {
+                let errMsg = "Failed to generate quiz.";
+                try {
+                    const errData = await response.json();
+                    if (errData.detail) errMsg = typeof errData.detail === 'string' ? errData.detail : JSON.stringify(errData.detail);
+                } catch(e) {}
+                throw new Error("Server Error: " + errMsg);
+            }
             
             const data = await response.json();
             currentQuestions = data.questions || [];
