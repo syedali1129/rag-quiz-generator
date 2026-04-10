@@ -32,6 +32,10 @@ async def generate_quiz(file: UploadFile = File(...)):
     if not extracted_text.strip():
         extracted_text = "Mock context text due to parsing failure or empty PDF."
 
+    # Prevent exceeding Groq's strict free-tier TPM (Tokens Per Minute) limit (6000 tokens)
+    # 1 token is roughly 4 characters. We slice at 12,000 characters (~3000 tokens) to ensure maximum safety.
+    safe_text_context = extracted_text[:12000]
+
     # Prompt Groq!
     prompt = f"""
     You are a highly intelligent educational assistant. 
@@ -43,7 +47,7 @@ async def generate_quiz(file: UploadFile = File(...)):
     'answer': the exact string from 'options' that is correct
     
     Text Context:
-    {extracted_text}
+    {safe_text_context}
     """
     
     try:
@@ -74,6 +78,9 @@ def evaluate_answer(request: EvaluateRequest):
     
     reasoning = ""
     if not is_correct:
+        # Heavily truncate context to prevent evaluate queries from stacking against the Groq TPM limit
+        safe_evaluate_context = request.context_text[:12000]
+        
         prompt = f"""
         The user answered a question incorrectly.
         Question: {request.question}
@@ -82,7 +89,7 @@ def evaluate_answer(request: EvaluateRequest):
         Look at the provided Context Text and explain briefly (1-2 sentences max) WHY the user's answer is wrong.
         
         Context Text:
-        {request.context_text}
+        {safe_evaluate_context}
         """
         try:
             chat_completion = client.chat.completions.create(
