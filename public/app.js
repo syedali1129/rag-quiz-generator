@@ -29,6 +29,18 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => showElem.classList.add('active-section'), 10);
     }
 
+    // File Selection Visual Logic
+    pdfInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const fileName = e.target.files[0].name;
+            fileNameDisplay.textContent = "📎 " + fileName;
+            fileNameDisplay.parentElement.classList.add('has-file');
+        } else {
+            fileNameDisplay.textContent = 'Click to choose a PDF file';
+            fileNameDisplay.parentElement.classList.remove('has-file');
+        }
+    });
+
     // Phase 1: Generate Quiz
     generateBtn.addEventListener('click', async () => {
         const file = pdfInput.files[0];
