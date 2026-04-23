@@ -39,7 +39,7 @@ async def generate_quiz(file: UploadFile = File(...)):
     # Prompt Groq!
     prompt = f"""
     You are a highly intelligent educational assistant. 
-    Read the following text and generate exactly 3 multiple choice questions based on the content.
+    Read the following text and generate exactly 5 multiple choice questions based on the content.
     Your response must be a highly structured JSON object with a single key 'questions' containing a list of dictionaries.
     Each dictionary must have:
     'question': the question text

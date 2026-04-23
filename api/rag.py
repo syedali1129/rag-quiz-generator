@@ -2,30 +2,32 @@ import re
 import math
 import random
 
-def chunk_text(text: str, max_chars: int = 500) -> list[str]:
+def chunk_text(text: str, max_chars: int = 500, overlap_sentences: int = 1) -> list[str]:
     """
-    Splits text into smaller chunks for embeddings.
-    A naive implementation splitting by sentences and grouping up to max_chars.
+    Splits text into smaller chunks with an overlap of N sentences to preserve context.
+    Improved for Assignment 6 to prevent semantic fragmentation.
     """
     if not text.strip():
         return []
         
-    sentences = re.split(r'(?<=[.!?]) +', text.strip())
+    # Improved regex to prevent splitting on decimals or common abbreviations
+    sentences = re.split(r'(?<!\b[A-Z]\.)(?<!\b(?:Mr|Ms|Dr|Inc|Ltd|vs)\.)(?<=\.|\?|\!)\s+', text.strip())
     chunks = []
-    current_chunk = ""
+    current_sentences = []
+    current_len = 0
     
     for sentence in sentences:
-        if len(current_chunk) + len(sentence) <= max_chars:
-            current_chunk += (" " if current_chunk else "") + sentence
+        if current_len + len(sentence) <= max_chars or not current_sentences:
+            current_sentences.append(sentence)
+            current_len += len(sentence) + 1
         else:
-            if current_chunk:
-                chunks.append(current_chunk)
-            # If a single sentence is longer than max_chars, we just add it anyway.
-            # In a robust implementation, we'd split it further.
-            current_chunk = sentence
+            chunks.append(" ".join(current_sentences))
+            # Start new chunk with overlap
+            current_sentences = current_sentences[-overlap_sentences:] + [sentence]
+            current_len = sum(len(s) + 1 for s in current_sentences)
             
-    if current_chunk:
-        chunks.append(current_chunk)
+    if current_sentences:
+        chunks.append(" ".join(current_sentences))
         
     return chunks
 

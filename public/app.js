@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sections
     const ingestSection = document.getElementById('ingest-section');
     const quizSection = document.getElementById('quiz-section');
+    const evaluatingSection = document.getElementById('evaluating-section');
     const resultsSection = document.getElementById('results-section');
     const loader = document.getElementById('loader');
     
@@ -138,8 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        submitBtn.disabled = true;
-        submitBtn.innerText = "Evaluating with AI...";
+        switchSection(quizSection, evaluatingSection);
 
         let correctCount = 0;
         let resultsHTML = '';
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreContainer.innerHTML = `<h3>You scored ${correctCount} out of ${currentQuestions.length}</h3>`;
         explanationsContainer.innerHTML = resultsHTML;
 
-        switchSection(quizSection, resultsSection);
+        switchSection(evaluatingSection, resultsSection);
         
         // Reset button state just in case
         submitBtn.disabled = false;
