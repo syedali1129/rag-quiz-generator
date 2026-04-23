@@ -10,6 +10,22 @@ LearnRAG is an intelligent, full-stack web application that allows users to uplo
 4. **Interactive Assessment**: The user takes the quiz on the frontend interface. 
 5. **AI Evaluation**: Upon submission, the user's answers are verified against the correct answers. If a user gets a question wrong, the LLM provides immediate, natural-language reasoning explaining *why* they were wrong based strictly on the uploaded text.
 
+## Assignment 5 -> Assignment 6 Improvements
+
+As part of the iterative development process for Assignment 6, several critical improvements were made over the Assignment 5 baseline. These enhancements directly affect the user experience and the reliability of the AI output:
+
+1. **Enhanced Evaluating Screen (UI/UX)**: 
+   - *Previous*: The UI remained static on the quiz screen while waiting for the LLM to grade the answers, which could confuse users.
+   - *Improvement*: Added a dedicated "Evaluating Your Answers" loading screen with a spinner. This prevents users from re-submitting and provides immediate, professional visual feedback that the AI is processing their answers.
+2. **Robust Context Chunking (RAG Pipeline)**: 
+   - *Previous*: The text chunker naively split text on punctuation (like `.`), which destroyed acronyms (e.g., U.S.A.), decimals (e.g., 3.14), and honorifics (e.g., Dr. Smith), leading to fragmented, confused AI context.
+   - *Improvement*: Implemented an advanced regex-based chunking algorithm that protects these edge cases and introduced an `overlap_sentences` parameter. This ensures semantic meaning is never severed across chunks, allowing the LLM to generate significantly higher-quality, contextually accurate questions.
+3. **Increased Quiz Volume**: 
+   - *Previous*: The system only generated 3 questions.
+   - *Improvement*: Scaled the generation prompt to reliably produce 5 questions, offering a more robust testing experience without breaking the strict JSON parsing schema.
+4. **Automated Evaluation Suite**: 
+   - *Improvement*: Added an `evaluate.py` script that programmatically tests Output Quality, End-to-End Success paths, and the Upstream Component, mathematically proving the reliability of the application.
+
 ## Architecture
 
 This project adopts a lightweight, highly-performant serverless architecture.
